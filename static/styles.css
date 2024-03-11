@@ -3,10 +3,11 @@
     margin-right: 1%;
     margin-top: 1%;
     display: inline-block;
-    background-color: rgb(190, 187, 177);
+    background-color: rgb(114,125,113);
     font-family: Verdana, Helvetica, Arial, sans-serif;
     width: 97%;
     height: 100px;
+    color: #FFFFFF;
 }
 
 .name {
@@ -36,8 +37,32 @@
     margin-top: 40%;
     text-align: center;
     display: inline-block;
-    background-color: rgb(190, 187, 177);
+    background-color: rgb(114,125,113);
+    color: #FFFFFF;
     font-family: Verdana, Helvetica, Arial, sans-serif;
     width: 97%;
     height: 100px;
+}
+
+.spaces{
+    width: 40%;
+}
+.img_welcome{
+
+    display: inline-block;
+}
+
+
+.img_text{
+
+    display: inline-block;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+    width: 30%;
+}
+
+.welcome{
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-top: 7%;
+    display: inline-block;
 }

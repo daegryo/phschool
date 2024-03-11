@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>science school</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
     <div class="head">
@@ -12,7 +12,10 @@
         <button class="button">Log In</button>
     </div>
 </body>
-
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
 <footer>
     <div class="footer">
             <p>
