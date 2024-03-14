@@ -11,12 +11,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 @app.route('/')
 def index():
-    form = WelcomeForm()
-    if form.validate_on_submit():
-        return redirect('/login')
-
-
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
 @app.route('/login')
 def login():
