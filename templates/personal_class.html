@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h2 class="usernames">Привет, {{ user.name }}</h2><br>
+<h2 class="usernames">имя пользователя: {{ user.name }}</h2><br>
+<h3 class="usernames">email: {{ user.email }}</h3><br>
+<h3 class="usernames">описание: {{ user.about }}</h3><br>
+<h3 class="usernames">дата регистрации: {{ user.created_date }}</h3><br>
+{% if image == '' %}
+    <p class="usernames">Выбери фото:</p>
+    <form class='usernames' method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.crsf_token}} {{ form.image }}
+     <h3>{{ form.submit(type="submit", class="btn btn-primary") }}</h3>
+    </form>
+{% else %}
+    <p class="usernames">Твоя аватарка:</p>
+    <img class='sdvig' src="../../static/uploads/images/{{ image }}" alt="no">
+
+{% endif %}
+
+
+{% endblock %}

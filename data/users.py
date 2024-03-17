@@ -19,7 +19,9 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    news = orm.relationship("News", back_populates='user')
+    photo = sqlalchemy.Column(sqlalchemy.String, default='1')
+
+
 
 
 
@@ -27,4 +29,4 @@ class User(SqlAlchemyBase, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+         self.password_hash = generate_password_hash(password)
