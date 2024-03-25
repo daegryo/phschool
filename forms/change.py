@@ -8,4 +8,4 @@ class ChangeForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Внести изменения')
-    image = FileField('image', validators=[DataRequired()])
+    image = FileField('image')

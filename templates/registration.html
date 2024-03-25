@@ -2,12 +2,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/styles.css">
-    <h1 class="heads">Зарегистрироваться</h1>
+    <h3 class="heads">Зарегистрироваться</h3>
 
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
-        <h3 class="heads">{{ form.name.label }}</h3><br>
+        <p class="heads">{{ form.name.label }}</p><br>
             {{ form.name(class="form-control") }}<br>
             {% for error in form.email.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -16,7 +16,7 @@
             {% endfor %}
         </p>
         <p>
-        <h3 class="heads">{{ form.email.label }}</h3><br>
+        <p class="heads">{{ form.email.label }}</p><br>
             {{ form.email(class="form-control", type="email") }}<br>
             {% for error in form.email.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -25,7 +25,7 @@
             {% endfor %}
         </p>
         <p>
-        <h3 class="heads">{{ form.password.label }}</h3><br>
+        <p class="heads">{{ form.password.label }}</p><br>
             {{ form.password(class="form-control", type="password") }}<br>
             {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -34,7 +34,7 @@
             {% endfor %}
         </p>
         <p>
-        <h3 class="heads">{{ form.about.label }}</h3><br>
+        <p class="heads">{{ form.about.label }}</p><br>
             {{ form.about(class="form-control") }}<br>
             {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -42,8 +42,8 @@
                 </div>
             {% endfor %}
         </p>
-        <h3 class="heads">{{ form.remember_me() }} {{ form.remember_me.label }}</h3>
-        <h3 class="heads">{{ form.submit(type="submit", class="btn btn-primary") }}</h3>
+        <p class="heads">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p class="heads">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
         <div class="heads">{{ message }}</div>
     </form>
 

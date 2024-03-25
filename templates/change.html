@@ -2,14 +2,14 @@
 
 {% block content %}
 <link rel="stylesheet" href="../../static/styles.css">
-    <h1 class="heads">Изменения</h1>
+    <h3 class="heads">Изменения</h3>
 
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.crsf_token}}
         <p>
-        <h3 class="heads">{{ form.name.label }}</h3><br>
-            {{ form.name(class="form-control") }}<br>
+        <p class="heads">{{ form.name.label }}</p><br>
+            {{ form.name(class="form-control", value=user.name ) }}<br>
             {% for error in form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -17,7 +17,7 @@
             {% endfor %}
         </p>
         <p>
-        <h3 class="heads">{{ form.password.label }}</h3><br>
+        <p class="heads">{{ form.password.label }}</p><br>
             {{ form.password(class="form-control", type="password") }}<br>
             {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -26,8 +26,8 @@
             {% endfor %}
         </p>
         <p>
-        <h3 class="heads">{{ form.about.label }}</h3><br>
-            {{ form.about(class="form-control") }}<br>
+        <p class="heads">{{ form.about.label }}</p><br>
+            {{ form.about(class="form-control", value=user.about) }}<br>
             {% for error in form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -36,7 +36,7 @@
         </p>
         </p>
         <p>
-        <h3 class="heads">{{ form.image.label }}</h3><br>
+        <p class="heads">{{ form.image.label }}</p><br>
             {{ form.image(class="form-control") }}<br>
             {% for error in form.image.errors %}
                 <div class="alert alert-danger" role="alert">

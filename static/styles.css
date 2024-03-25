@@ -3,7 +3,7 @@
     margin-right: 1%;
     margin-top: 1%;
     display: inline-block;
-    background-color: rgb(88, 75, 83);
+    background-color: rgb(114,125,113);
     font-family: Verdana, Helvetica, Arial, sans-serif;
     width: 97%;
     height: 120px;
@@ -134,4 +134,18 @@
     font-family: Verdana, Helvetica, Arial, sans-serif;
     margin-left: 15%;
     text: center;
+}
+
+.gradient{
+  font-size: 27px;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #4d685a, #aa998f);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  display: inline-block;
+  width: 30%;
+   margin-left: 15%;
+   font-family: Verdana, Helvetica, Arial, sans-serif;
+
 }

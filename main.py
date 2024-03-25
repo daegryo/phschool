@@ -78,20 +78,9 @@ def personal_class(email):
             new_email += el
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
-    if request.method == 'POST' and  form.validate_on_submit():
-        filename = images.save(form.image.data)
-        img_ava = circle_crop(filename.split()[0], (100, 100),'#584B53')
-        img_ava.save(f'static/avatars/{filename.split()[0]}')
-        img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
-        img_ph.save(f'static/users_photo/{filename.split()[0]}')
-        user.photo = filename.split()[0]
-        db_sess.commit()
-        return render_template('personal_class.html', user=user, form=form, image=user.photo)
-    elif user.photo != '1':
-        return render_template('personal_class.html', user=user, form=form, image=user.photo)
 
 
-    return render_template('personal_class.html', user=user, form=form, image='')
+    return render_template('personal_class.html', user=user, form=form, image=user.photo)
 
 
 @app.route('/home')
@@ -107,19 +96,26 @@ def change(email):
     form = ChangeForm()
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
+    print(user.name)
     if  request.method == 'POST' and form.validate_on_submit():
-        filename = img.save(form.image.data)
+
         user.name = form.name.data
         user.about = form.about.data
-        print(form.image.data)
-        img_ava = circle_crop(filename.split()[0], (100, 100), '#584B53')
-        img_ava.save(f'static/avatars/{filename.split()[0]}')
-        img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
-        img_ph.save(f'static/users_photo/{filename.split()[0]}')
-        user.photo = filename.split()[0]
-        db_sess.commit()
+        try:
+            filename = img.save(form.image.data)
+            img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
+            img_ava.save(f'static/avatars/{filename.split()[0]}')
+            img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
+            img_ph.save(f'static/users_photo/{filename.split()[0]}')
+            user.photo = filename.split()[0]
 
-    return render_template('change.html', form=form)
+        except:
+            user.photo = 'default.jpg'
+
+        db_sess.commit()
+        return redirect(f"/home/personal-class/<{new_email}>")
+
+    return render_template('change.html', form=form, user=user)
 
 @app.route('/logout')
 @login_required

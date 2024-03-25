@@ -30,3 +30,5 @@ def circle_crop(filename, size, color):
     return image
 
 
+img_ava = circle_crop('default.jpg',(100, 100), '#727d71')
+img_ava.save(f'static/avatars/default.jpg')

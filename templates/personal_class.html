@@ -3,11 +3,13 @@
 {% block content %}
 
 
-<h2 class="usernames">Привет, {{ user.name }}</h2><br>
-<h3 class="usernames">имя пользователя: {{ user.name }}</h3><br>
-<h3 class="usernames">email: {{ user.email }}</h3><br>
-<h3 class="usernames">описание: {{ user.about }}</h3><br>
-<h3 class="usernames">дата регистрации: {{ user.created_date }}</h3><br>
+<h2 class="gradient">Привет, {{ user.name }}</h2><br>
+<div>
+<p class="usernames">имя пользователя: {{ user.name }}</p><br>
+<p class="usernames">email: {{ user.email }}</p><br>
+<p class="usernames">описание: {{ user.about }}</p><br>
+<p class="usernames">дата регистрации: {{ user.created_date }}</p><br>
+    </div>
 <div>
     {% if image == '' %}
         <p class="usernames">Выбери фото:</p>
