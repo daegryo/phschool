@@ -1,24 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<link rel="stylesheet" href="../static/styles.css">
-    <h1 class="heads">Зарегистрироваться</h1>
+<link rel="stylesheet" href="../../static/styles.css">
+    <h1 class="heads">Изменения</h1>
 
     <form action="" method="post">
         {{ form.hidden_tag() }}
+        {{ form.crsf_token}}
         <p>
         <h3 class="heads">{{ form.name.label }}</h3><br>
             {{ form.name(class="form-control") }}<br>
-            {% for error in form.email.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
-        </p>
-        <p>
-        <h3 class="heads">{{ form.email.label }}</h3><br>
-            {{ form.email(class="form-control", type="email") }}<br>
-            {% for error in form.email.errors %}
+            {% for error in form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
@@ -36,14 +28,23 @@
         <p>
         <h3 class="heads">{{ form.about.label }}</h3><br>
             {{ form.about(class="form-control") }}<br>
-            {% for error in form.password.errors %}
+            {% for error in form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
             {% endfor %}
         </p>
-        <h3 class="heads">{{ form.remember_me() }} {{ form.remember_me.label }}</h3>
-        <h3 class="heads">{{ form.submit(type="submit", class="btn btn-primary") }}</h3>
+        </p>
+        <p>
+        <h3 class="heads">{{ form.image.label }}</h3><br>
+            {{ form.image(class="form-control") }}<br>
+            {% for error in form.image.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <h3 class="heads">{{ form.submit(type="submit", class="button1") }}</h3>
         <div class="heads">{{ message }}</div>
     </form>
 

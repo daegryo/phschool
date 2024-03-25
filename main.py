@@ -3,11 +3,12 @@ from flask import Flask, url_for, redirect, render_template
 from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.users import User
+from forms.change import ChangeForm
 from forms.login import LoginForm
 from forms.uploads import UploadForm
 from forms.registration import RegistrationForm
-from werkzeug.utils import secure_filename
-from os import remove
+
+from crop import circle_crop
 
 from flask_uploads import configure_uploads, IMAGES, UploadSet
 
@@ -22,6 +23,9 @@ login_manager.init_app(app)
 
 images = UploadSet('images', IMAGES)
 configure_uploads(app, images)
+
+img = UploadSet('images', IMAGES)
+configure_uploads(app, img)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -40,8 +44,7 @@ def login():
         user.set_password(form.password.data)
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            print('jjjjjjjj')
-            return redirect(f"/home/<{form.email.data}>")
+            return redirect(f"/home")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
                                form=form)
@@ -65,23 +68,22 @@ def registration():
         return redirect(f"/login")
     return render_template('registration.html', form=form)
 
-@app.route('/home/<email>/personal-class', methods=['GET', 'POST'])
+@app.route('/home/personal-class/<email>', methods=['GET', 'POST'])
 def personal_class(email):
     form = UploadForm()
 
     new_email = ''
     for el in email:
         if el != '<' and el != '>':
-            print(el)
             new_email += el
-    print(email, new_email)
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
-    print('v')
     if request.method == 'POST' and  form.validate_on_submit():
-        print('lllllllll')
         filename = images.save(form.image.data)
-        print(filename.split()[0])
+        img_ava = circle_crop(filename.split()[0], (100, 100),'#584B53')
+        img_ava.save(f'static/avatars/{filename.split()[0]}')
+        img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
+        img_ph.save(f'static/users_photo/{filename.split()[0]}')
         user.photo = filename.split()[0]
         db_sess.commit()
         return render_template('personal_class.html', user=user, form=form, image=user.photo)
@@ -92,19 +94,32 @@ def personal_class(email):
     return render_template('personal_class.html', user=user, form=form, image='')
 
 
-@app.route('/home/<email>')
-def home(email):
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
+def change(email):
     new_email = ''
     for el in email:
         if el != '<' and el != '>':
-            print(el)
             new_email += el
-    print(new_email)
-
+    form = ChangeForm()
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
-    print(type(user))
-    return render_template('home.html', user=user)
+    if  request.method == 'POST' and form.validate_on_submit():
+        filename = img.save(form.image.data)
+        user.name = form.name.data
+        user.about = form.about.data
+        print(form.image.data)
+        img_ava = circle_crop(filename.split()[0], (100, 100), '#584B53')
+        img_ava.save(f'static/avatars/{filename.split()[0]}')
+        img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
+        img_ph.save(f'static/users_photo/{filename.split()[0]}')
+        user.photo = filename.split()[0]
+        db_sess.commit()
+
+    return render_template('change.html', form=form)
 
 @app.route('/logout')
 @login_required
