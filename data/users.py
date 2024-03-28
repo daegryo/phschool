@@ -6,7 +6,6 @@ from data.db_session import SqlAlchemyBase
 from flask_login import UserMixin
 from sqlalchemy import orm
 
-
 class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
@@ -20,6 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
     photo = sqlalchemy.Column(sqlalchemy.String, default='default.jpg')
+    user_course = orm.relationship("UserCourse", back_populates='user')
 
 
 

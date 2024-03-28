@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 from flask import Flask, url_for, redirect, render_template
 from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+
+from data.courses import Course
 from data.users import User
 from forms.change import ChangeForm
 from forms.login import LoginForm
@@ -85,7 +87,12 @@ def personal_class(email):
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    db_sess = db_session.create_session()
+    all_courses = db_sess.query(Course).all()
+    for el in all_courses:
+        print(el.title)
+
+    return render_template('home.html', course=all_courses)
 
 @app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
 def change(email):
