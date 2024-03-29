@@ -11,6 +11,11 @@
     color: #FFFFFF;
 }
 
+.avatar{
+    width: 100px;
+    height: 100px;
+}
+
 .name {
     display: inline-block;
     width: 65%;
@@ -166,6 +171,43 @@
 
 .inner-img:hover {
   transform: scale(1.1);
+}
+
+.otstup{
+    margin: 2%;
+}
+.courses{
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.courses a{
+     height: 50px;
+     align-self: center;
+}
+
+.onecourse{
+     display: flex; /* or inline-flex */
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start ;
+    outline: solid rgb(195,162,158);
+    border-radius: 1rem;
+    margin-right: 3%;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+}
+
+
+.text-course{
+    padding: .75rem;
+    margin-left: 1%
+}
+
+.card-a{
+    text-decoration:none;
+    color: black;
 }
 
 
