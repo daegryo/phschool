@@ -3,7 +3,7 @@ from IPython.display import Image as jpImg
 
 
 def circle_crop(filename, size, color):
-    image = Image.new('RGB', size, color = color)
+    image = Image.new('RGBA', size, color = color)
     draw = ImageDraw.Draw(image)
 
     # draw the border
@@ -26,9 +26,10 @@ def circle_crop(filename, size, color):
     # now drop that in the center of where our cicle is
     image.paste(output, (x_offset+(border_size//2), y_offset+(border_size//2)), output)
 
-    jpImg(image, filename='static/uploads/images/Forest.jpg')
+    image.show()
+
     return image
 
 
-img_ava = circle_crop('default.jpg',(100, 100), '#727d71')
-img_ava.save(f'static/avatars/default.jpg')
+
+

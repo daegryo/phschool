@@ -4,8 +4,20 @@
 
 
 <h3 class="usernames">Hello</h3><br>
-{% for el in course %}
-    <p>{{ el.title }}</p>
-{% endfor %}
+<div class="otstup">
+<div class="courses">
+    {% for i in range(4) %}
+
+        <div class="onecourse">
+            <h3 class="text-course"><a  class='card-a' href="/">{{ course[i].title }}</a></h3>
+                <p class="text-course"><a  class='card-a' href="/">{{ course[i].content[:30] }}...</a></p>
+
+        </div>
+
+
+    {% endfor %}
+    <a class="button1" href="/home/personal-class/112@email.ru>/change">Все курсы</a>
+    </div>
+</div>
 
 {% endblock %}

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from flask import Flask, url_for, redirect, render_template
 from data import db_session
@@ -109,10 +110,17 @@ def change(email):
         user.name = form.name.data
         user.about = form.about.data
         try:
-            filename = img.save(form.image.data)
-            img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
-            img_ava.save(f'static/avatars/{filename.split()[0]}')
-            img_ph = circle_crop(filename.split()[0], (250, 250), '#FFFFFF')
+            fn = img.save(form.image.data)
+            if os.path.exists(f'static/uploads/images/{user.id}.jpg') is False:
+                os.rename(f'static/uploads/images/{fn}', f'static/uploads/images/{user.id}.jpg')
+            else:
+                os.remove(f'static/uploads/images/{user.id}.jpg')
+                os.rename(f'static/uploads/images/{fn}', f'static/uploads/images/{user.id}.jpg')
+            filename = f'{user.id}.jpg'
+            print(filename)
+       #     img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
+          #  img_ava.save(f'static/avatars/{filename.split()[0]}')
+            img_ph = circle_crop(filename.split()[0], (250, 250), (255, 255, 255, 0))
             img_ph.save(f'static/users_photo/{filename.split()[0]}')
             user.photo = filename.split()[0]
 
@@ -133,4 +141,6 @@ def logout():
 
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
+
     app.run(port=8080, host='127.0.0.1', debug=True)
+
