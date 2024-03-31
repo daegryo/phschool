@@ -11,18 +11,10 @@
 <p class="usernames">дата регистрации: {{ user.created_date }}</p><br>
     </div>
 <div>
-    {% if image == '' %}
-        <p class="usernames">Выбери фото:</p>
-        <form class='usernames' method="post" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            {{ form.crsf_token}} {{ form.image }}
-         <h3>{{ form.submit(type="submit", class="btn btn-primary") }}</h3>
-        </form>
-    {% else %}
+
         <p class="some-text">Твоя аватарка:</p><br>
         <img class='sdvig' src="../../static/users_photo/{{ image }}" alt="no">
 
-    {% endif %}
     <a class="button1" href="/home/personal-class/{{ user.email }}>/change">Внести изменения</a>
 </div>
 

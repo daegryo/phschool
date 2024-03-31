@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="gradient">Мои курсы</h2>
+<div class="all-courses">
+{% for el in course %}
+    <div class="all-onecourse">
+<h3><a class="all-onecourse-a" href="#">{{ el.title }}</a></h3>
+        <p><a class="all-onecourse-a" href="#"> {{ el.content[:30] }}</a></p>
+    </div>
+{% endfor %}
+    </div>
+
+{% endblock %}

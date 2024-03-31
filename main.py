@@ -6,14 +6,18 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 
 from data.courses import Course
 from data.users import User
+from data.users_courses import UserCourse
 from forms.change import ChangeForm
 from forms.login import LoginForm
 from forms.uploads import UploadForm
 from forms.registration import RegistrationForm
+from forms.home import HomeForm
 
 from crop import circle_crop
 
 from flask_uploads import configure_uploads, IMAGES, UploadSet
+
+from userinfo import UserInfo
 
 
 
@@ -30,6 +34,7 @@ configure_uploads(app, images)
 img = UploadSet('images', IMAGES)
 configure_uploads(app, img)
 
+userinf = ''
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -40,6 +45,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global userinf
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -47,6 +53,7 @@ def login():
         user.set_password(form.password.data)
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+            userinf = UserInfo(user.email, user.id)
             return redirect(f"/home")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
@@ -86,14 +93,61 @@ def personal_class(email):
     return render_template('personal_class.html', user=user, form=form, image=user.photo)
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
+    global userinf
+    form = HomeForm()
+    db_sess = db_session.create_session()
+    id_newcourses = ''
+    if form.validate_on_submit():
+        id_newcourses = request.form.getlist("check_box")
+        id_newcourses = [int(x) for x in id_newcourses]
+        for id_course in id_newcourses:
+            user_courses = UserCourse()
+            user_courses.user_id = int(userinf.id)
+            user_courses.id_course = int(id_course)
+            db_sess.add(user_courses)
+            db_sess.commit()
+    all_courses = db_sess.query(Course).all()
+    if userinf != '':
+        id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == userinf.id).all()
+        my_courses = []
+        if id_courses != []:
+            for el in id_courses:
+                courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                my_courses.append(courses)
+            id_newcourses = []
+            for el in my_courses:
+                id_newcourses.append(el.id)
+        else:
+            my_courses = '1'
+    else:
+        my_courses = ''
+
+    for el in all_courses:
+        print(str(el.id) in id_newcourses)
+
+    print(id_newcourses)
+
+    return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=userinf)
+
+@app.route('/home/all-courses')
+def all_courses():
     db_sess = db_session.create_session()
     all_courses = db_sess.query(Course).all()
-    for el in all_courses:
-        print(el.title)
+    return render_template('all_courses.html', course=all_courses)
 
-    return render_template('home.html', course=all_courses)
+@app.route('/home/my-courses')
+def my_courses():
+    global userinf
+    db_sess = db_session.create_session()
+    id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == userinf.id).all()
+    my_courses = []
+    if id_courses != []:
+        for el in id_courses:
+            courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+            my_courses.append(courses)
+    return render_template('my_courses.html', course=my_courses)
 
 @app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
 def change(email):
@@ -118,9 +172,10 @@ def change(email):
                 os.rename(f'static/uploads/images/{fn}', f'static/uploads/images/{user.id}.jpg')
             filename = f'{user.id}.jpg'
             print(filename)
-       #     img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
-          #  img_ava.save(f'static/avatars/{filename.split()[0]}')
-            img_ph = circle_crop(filename.split()[0], (250, 250), (255, 255, 255, 0))
+            img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
+            img_ava.save(f'static/avatars/{filename.split()[0]}')
+            img_ph = circle_crop(filename.split()[0], (250, 250),  '#FFFFFF')
+
             img_ph.save(f'static/users_photo/{filename.split()[0]}')
             user.photo = filename.split()[0]
 
@@ -135,6 +190,8 @@ def change(email):
 @app.route('/logout')
 @login_required
 def logout():
+    global userinf
+    userinf = ''
     logout_user()
     return redirect("/")
 
