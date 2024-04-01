@@ -17,8 +17,6 @@ from crop import circle_crop
 
 from flask_uploads import configure_uploads, IMAGES, UploadSet
 
-from userinfo import UserInfo
-
 
 
 
@@ -53,7 +51,6 @@ def login():
         user.set_password(form.password.data)
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            userinf = UserInfo(user.email, user.id)
             return redirect(f"/home")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
@@ -109,8 +106,8 @@ def home():
             db_sess.add(user_courses)
             db_sess.commit()
     all_courses = db_sess.query(Course).all()
-    if userinf != '':
-        id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == userinf.id).all()
+    if current_user.is_authenticated:
+        id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
         my_courses = []
         if id_courses != []:
             for el in id_courses:
@@ -128,8 +125,9 @@ def home():
         print(str(el.id) in id_newcourses)
 
     print(id_newcourses)
+    print(all_courses)
 
-    return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=userinf)
+    return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
 
 @app.route('/home/all-courses')
 def all_courses():
@@ -141,7 +139,7 @@ def all_courses():
 def my_courses():
     global userinf
     db_sess = db_session.create_session()
-    id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == userinf.id).all()
+    id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
     my_courses = []
     if id_courses != []:
         for el in id_courses:
