@@ -1,3 +1,14 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var courseDivs = document.querySelectorAll(".all-onecourse");
+    courseDivs.forEach(function(courseDiv) {
+        courseDiv.addEventListener("click", function() {
+            var courseId = courseDiv.getAttribute("data-course-id");
+            window.location.href = "/home/all-courses/" + courseId;
+        });
+    });
+});
+</script>
 {% extends "base.html" %}
 
 {% block content %}
@@ -5,10 +16,12 @@
 <h2 class="gradient">Все курсы</h2>
 <div class="all-courses">
 {% for el in course %}
-    <div class="all-onecourse">
-<h3><a class="all-onecourse-a" href="#">{{ el.title }}</a></h3>
-        <p><a class="all-onecourse-a" href="#"> {{ el.content[:30] }}</a></p>
+    <a href="{{ url_for('course', course_id=el.id) }}">
+    <div class="all-onecourse" data-course-id="{{ el.id }}">
+<h3><a class="all-onecourse-a">{{ el.title }}</a></h3>
+        <p><a class="all-onecourse-a"> {{ el.description }}</a></p>
     </div>
+    </a>
 {% endfor %}
     </div>
 

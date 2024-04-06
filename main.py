@@ -1,4 +1,6 @@
 import os
+
+import flask
 from flask import Flask, render_template, request
 from flask import Flask, url_for, redirect, render_template
 from data import db_session
@@ -18,8 +20,6 @@ from crop import circle_crop
 from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads/images'
@@ -33,13 +33,18 @@ img = UploadSet('images', IMAGES)
 configure_uploads(app, img)
 
 userinf = ''
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,7 +53,6 @@ def login():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
-        user.set_password(form.password.data)
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect(f"/home")
@@ -74,6 +78,7 @@ def registration():
         db_sess.commit()
         return redirect(f"/login")
     return render_template('registration.html', form=form)
+
 
 @app.route('/home/personal-class/<email>', methods=['GET', 'POST'])
 def personal_class(email):
@@ -129,11 +134,22 @@ def home():
 
     return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
 
+
+@app.route('/home/all-courses/<course_id>')
+def course(course_id):
+    db_sess = db_session.create_session()
+    el_course = db_sess.query(Course).filter_by(id=course_id).first()
+    if el_course:
+        return render_template('course.html', course=el_course)
+    flask.abort(404)
+
+
 @app.route('/home/all-courses')
 def all_courses():
     db_sess = db_session.create_session()
     all_courses = db_sess.query(Course).all()
     return render_template('all_courses.html', course=all_courses)
+
 
 @app.route('/home/my-courses')
 def my_courses():
@@ -147,7 +163,8 @@ def my_courses():
             my_courses.append(courses)
     return render_template('my_courses.html', course=my_courses)
 
-@app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
+
+@app.route('/home/personal-class/xemail>/change', methods=['GET', 'POST'])
 def change(email):
     new_email = ''
     for el in email:
@@ -185,6 +202,7 @@ def change(email):
 
     return render_template('change.html', form=form, user=user)
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -196,6 +214,6 @@ def logout():
 
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
-
-    app.run(port=8080, host='127.0.0.1', debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 
