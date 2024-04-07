@@ -3,13 +3,24 @@
 {% block content %}
 
 <h2 class="gradient">Мои курсы</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
 <div class="all-courses">
-{% for el in course %}
+{% for i in range(len) %}
     <div class="all-onecourse">
-<h3><a class="all-onecourse-a" href="#">{{ el.title }}</a></h3>
-        <p><a class="all-onecourse-a" href="#"> {{ el.content[:30] }}</a></p>
+<h3><a class="all-onecourse-a" href="#">{{ course[i].title }}</a></h3>
+        <p><a class="all-onecourse-a" href="#"> {{ course[i].content[:30] }}</a></p>
+        <div class="courses1">
+                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
+                                    </div>
     </div>
 {% endfor %}
+         {% if userinf != '' and len != 0 %}
+            <p>{{ form.submit(type="submit", class="button1") }}</p>
+        {% else %}
+        <h2 class="usernames">Вы не добавили ни один курс</h2>
+        {% endif %}
     </div>
+            </form>
 
 {% endblock %}

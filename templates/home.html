@@ -2,9 +2,11 @@
 
 {% block content %}
 
-
+<form action="" method="post">
 {% if my_courses != '' %}
 <h2 class="usernames">Мои курсы</h2><br>
+
+    {{ form.hidden_tag() }}
     {% if my_courses != '1' %}
     <div class="otstup">
         <div class="courses">
@@ -26,8 +28,7 @@
 {% endif %}
 <h2 class="usernames">Все курсы</h2><br>
 <div class="otstup">
-<form action="" method="post">
-    {{ form.hidden_tag() }}
+
 <div class="courses">
     {% for i in range(4) %}
         <div class="onecourse">
@@ -37,11 +38,18 @@
                     {% if checked != '' %}
                         {% if course[i].id in checked %}
                                 <p class="text-course"><u>Добавлен</u></p>
+                                <div class="courses1">
+                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
+                                    </div>
                         {% else %}
-                            <input type="checkbox" name="check_box" value="{{ course[i].id }}">
+                            <div class="courses1">
+                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
+                                    </div>
                         {% endif %}
                     {% else %}
-                         <input type="checkbox" name="check_box" value="{{ course[i].id }}">
+                         <div class="courses1">
+                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
+                                    </div>
                     {% endif %}
                 {% endif %}
         </div>
@@ -54,7 +62,8 @@
 
     </div>
     </div>
-    </form>
+
 </div>
+    </form>
 
 {% endblock %}

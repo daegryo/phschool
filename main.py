@@ -97,14 +97,32 @@ def home():
     db_sess = db_session.create_session()
     id_newcourses = ''
     if form.validate_on_submit():
+        if current_user.is_authenticated:
+            id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
+            print(id_courses)
+            my_courses = []
+            if id_courses != []:
+                for el in id_courses:
+                    courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                    my_courses.append(courses)
         id_newcourses = request.form.getlist("check_box")
         id_newcourses = [int(x) for x in id_newcourses]
+
+        my_ids = [x.id for x in my_courses]
+        print(id_newcourses, 'то что ырбали')
+        print(my_ids, 'id my courses')
         for id_course in id_newcourses:
-            user_courses = UserCourse()
-            user_courses.user_id = int(userinf.id)
-            user_courses.id_course = int(id_course)
-            db_sess.add(user_courses)
-            db_sess.commit()
+            print(id_course)
+            if id_course not in my_ids:
+                user_courses = UserCourse()
+                user_courses.user_id = int(current_user.id)
+                user_courses.id_course = int(id_course)
+                db_sess.add(user_courses)
+                db_sess.commit()
+            else:
+                del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id, UserCourse.id_course == id_course).first()
+                db_sess.delete(del_course)
+                db_sess.commit()
     all_courses = db_sess.query(Course).all()
     if current_user.is_authenticated:
         id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
@@ -129,23 +147,84 @@ def home():
 
     return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
 
-@app.route('/home/all-courses')
+@app.route('/home/all-courses',  methods=['GET', 'POST'])
 def all_courses():
+    form = HomeForm()
     db_sess = db_session.create_session()
     all_courses = db_sess.query(Course).all()
-    return render_template('all_courses.html', course=all_courses)
+    id_newcourses = ''
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
+            my_courses = []
+            if id_courses != []:
+                for el in id_courses:
+                    courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                    my_courses.append(courses)
+        id_newcourses = request.form.getlist("check_box")
+        id_newcourses = [int(x) for x in id_newcourses]
 
-@app.route('/home/my-courses')
+        my_ids = [x.id for x in my_courses]
+        print(my_ids)
+        for id_course in id_newcourses:
+            if id_course not in my_ids:
+                user_courses = UserCourse()
+                user_courses.user_id = int(current_user.id)
+                user_courses.id_course = int(id_course)
+                db_sess.add(user_courses)
+                db_sess.commit()
+            else:
+                del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id,
+                                                              UserCourse.id_course == id_course).first()
+                db_sess.delete(del_course)
+                db_sess.commit()
+    if current_user.is_authenticated:
+        id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
+        my_courses = []
+        if id_courses != []:
+            for el in id_courses:
+                courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                my_courses.append(courses)
+            id_newcourses = []
+            for el in my_courses:
+                id_newcourses.append(el.id)
+        else:
+            my_courses = '1'
+    else:
+        my_courses = ''
+    return render_template('all_courses.html', course=all_courses, userinf=current_user, len=len(all_courses), checked=id_newcourses, form=form)
+
+@app.route('/home/my-courses', methods=['GET', 'POST'])
 def my_courses():
     global userinf
+    form = HomeForm()
     db_sess = db_session.create_session()
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
+            my_courses = []
+            if id_courses != []:
+                for el in id_courses:
+                    courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                    my_courses.append(courses)
+        id_newcourses = request.form.getlist("check_box")
+        id_newcourses = [int(x) for x in id_newcourses]
+
+        my_ids = [x.id for x in my_courses]
+        print(my_ids)
+        for id_course in id_newcourses:
+            if id_course in my_ids:
+                del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id,
+                                                              UserCourse.id_course == id_course).first()
+                db_sess.delete(del_course)
+                db_sess.commit()
     id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
     my_courses = []
     if id_courses != []:
         for el in id_courses:
             courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
             my_courses.append(courses)
-    return render_template('my_courses.html', course=my_courses)
+    return render_template('my_courses.html', course=my_courses, len=len(my_courses), form=form, userinf=current_user)
 
 @app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
 def change(email):

@@ -191,6 +191,13 @@
     justify-content: center;
 }
 
+.courses1{
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start ;
+}
+
 .courses a{
      height: 50px;
      align-self: center;
@@ -210,8 +217,14 @@
 
 .text-course{
     padding: .75rem;
-    margin-left: 1%
+    margin-left: 1%;
 }
+
+.text-course1{
+    margin-left: 1%;
+    text-align: center;
+}
+
 
 .card-a{
     text-decoration:none;

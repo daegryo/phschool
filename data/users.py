@@ -6,6 +6,7 @@ from data.db_session import SqlAlchemyBase
 from flask_login import UserMixin
 from sqlalchemy import orm
 
+
 class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
