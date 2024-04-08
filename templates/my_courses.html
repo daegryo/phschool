@@ -9,7 +9,7 @@
 {% for i in range(len) %}
     <div class="all-onecourse">
 <h3><a class="all-onecourse-a" href="#">{{ course[i].title }}</a></h3>
-        <p><a class="all-onecourse-a" href="#"> {{ course[i].content[:30] }}</a></p>
+        <p><a class="all-onecourse-a" href="#"> {{ course[i].description }}</a></p>
         <div class="courses1">
                                 <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
                                     </div>

@@ -1,41 +1,18 @@
+<script src="../../../static/buttons_all-onecourse.js"></script>
 {% extends "base.html" %}
 
 {% block content %}
 
 <h2 class="gradient">Все курсы</h2>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
 <div class="all-courses">
-{% for i in range(len) %}
-    <div class="all-onecourse">
-<h3><a class="all-onecourse-a" href="#">{{ course[i].title }}</a></h3>
-        <p><a class="all-onecourse-a" href="#"> {{ course[i].content[:30] }}</a></p>
-        {% if userinf != '' %}
-                    {% if checked != '' %}
-                        {% if course[i].id in checked %}
-                                <p class="text-course"><u>Добавлен</u></p>
-                                <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
-                                    </div>
-                        {% else %}
-                            <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
-                                    </div>
-                        {% endif %}
-                    {% else %}
-                         <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
-                                    </div>
-                    {% endif %}
-                {% endif %}
+{% for el in course %}
+    <a href="{{ url_for('course', course_id=el.id) }}">
+    <div class="all-onecourse" data-course-id="{{ el.id }}">
+<h3><a class="all-onecourse-a">{{ el.title }}</a></h3>
+        <p><a class="all-onecourse-a"> {{ el.description }}</a></p>
     </div>
+    </a>
 {% endfor %}
-        {% if userinf != '' %}
-            <p>{{ form.submit(type="submit", class="button1") }}</p>
-
-
-        {% endif %}
     </div>
-        </form>
 
 {% endblock %}

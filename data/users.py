@@ -22,10 +22,6 @@ class User(SqlAlchemyBase, UserMixin):
     photo = sqlalchemy.Column(sqlalchemy.String, default='default.jpg')
     user_course = orm.relationship("UserCourse", back_populates='user')
 
-
-
-
-
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
