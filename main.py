@@ -96,6 +96,7 @@ def home():
     form = HomeForm()
     db_sess = db_session.create_session()
     id_newcourses = ''
+    all_courses = db_sess.query(Course).all()
     if form.validate_on_submit():
         if current_user.is_authenticated:
             id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
@@ -142,10 +143,10 @@ def home():
     for el in all_courses:
         print(str(el.id) in id_newcourses)
 
-    print(id_newcourses)
     print(all_courses)
 
     return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
+
 
 @app.route('/home/all-courses/<course_id>')
 def course(course_id):
@@ -202,9 +203,8 @@ def all_courses():
         my_courses = ''
     return render_template('all_courses.html', course=all_courses, userinf=current_user, len=len(all_courses), checked=id_newcourses, form=form)
 
-@app.route('/home/my-courses', methods=['GET', 'POST'])
 
-@app.route('/home/my-courses')
+@app.route('/home/my-courses', methods=['GET', 'POST'])
 def my_courses():
     global userinf
     form = HomeForm()
@@ -235,6 +235,7 @@ def my_courses():
             courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
             my_courses.append(courses)
     return render_template('my_courses.html', course=my_courses, len=len(my_courses), form=form, userinf=current_user)
+
 
 @app.route('/home/personal-class/<email>/change', methods=['GET', 'POST'])
 def change(email):
@@ -273,6 +274,7 @@ def change(email):
         return redirect(f"/home/personal-class/<{new_email}>")
 
     return render_template('change.html', form=form, user=user)
+
 
 @app.route('/logout')
 @login_required

@@ -1,4 +1,4 @@
-<script src="../../../static/buttons.js"></script>
+<script src="../../../static/buttons_all-onecourse.js"></script>
 {% extends "base.html" %}
 
 {% block content %}
@@ -13,7 +13,7 @@
         <div class="courses">
             {% for i in range(len) %}
             {% if i < 3 %}
-                <div class="onecourse">
+                <div class="onecourse" data-course-id="{{ my_courses[i].id }}">
                     <h3 class="text-course"><a  class='card-a' href="/">{{ my_courses[i].title }}</a></h3>
                         <p class="text-course"><a  class='card-a' href="/">{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
                     <p class="text-course"><u>Добавлен</u></p>
@@ -32,7 +32,7 @@
 
 <div class="courses">
     {% for i in range(3) %}
-        <div class="onecourse">
+        <div class="onecourse" data-course-id="{{ course[i].id }}">
             <h3 class="text-course"><a  class='card-a' href="/">{{ course[i].title }}</a></h3>
                 <p class="text-course"><a  class='card-a' href="/">{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
                 {% if userinf != '' %}
