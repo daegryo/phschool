@@ -208,6 +208,8 @@ a {
 }
 
 .onecourse{
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -218,7 +220,10 @@ a {
     margin-bottom: 3%;
     font-family: Verdana, Helvetica, Arial, sans-serif;
 }
-
+.onecourse:hover{
+    transform: scale(1.03);
+    background-color: #f0f0f0;
+}
 
 .text-course{
     padding: .75rem;
@@ -315,3 +320,51 @@ display: flex; /* or inline-flex */
     overflow-wrap: break-word;
 }
 
+.delete-button {
+    background-color: #c2ccbe;
+    color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #cca7a7;
+    color: #111111;
+    border-color: #000000;
+}
+
+.delete-button:hover::after {
+    content: "Удалить";
+}
+
+.delete-button::before {
+    content: "Добавлен";
+}
+
+
+.delete-button:hover::before {
+    display: none;
+}
+
+.add-button {
+    background-color: #ffffff;
+    color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.add-button:hover {
+    background-color: #f7f5d7;
+    color: #111111;
+    border-color: #000000;
+}

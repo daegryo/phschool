@@ -14,9 +14,9 @@
             {% for i in range(len) %}
             {% if i < 3 %}
                 <div class="onecourse" data-course-id="{{ my_courses[i].id }}">
-                    <h3 class="text-course"><a  class='card-a' href="/">{{ my_courses[i].title }}</a></h3>
-                        <p class="text-course"><a  class='card-a' href="/">{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
-                    <p class="text-course"><u>Добавлен</u></p>
+                    <h3 class="text-course"><a  class='card-a'>{{ my_courses[i].title }}</a></h3>
+                        <p class="text-course"><a  class='card-a'>{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
+                    <a class="delete-button" href="/delete_my_course/{{ my_courses[i].id }}"></a>
                 </div>
             {% endif %}
         {% endfor %}
@@ -29,23 +29,17 @@
 {% endif %}
 <h2 class="usernames">Все курсы</h2><br>
 <div class="otstup">
-
 <div class="courses">
     {% for i in range(3) %}
         <div class="onecourse" data-course-id="{{ course[i].id }}">
-            <h3 class="text-course"><a  class='card-a' href="/">{{ course[i].title }}</a></h3>
-                <p class="text-course"><a  class='card-a' href="/">{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
+            <h3 class="text-course"><a  class='card-a'>{{ course[i].title }}</a></h3>
+                <p class="text-course"><a  class='card-a'>{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
                 {% if userinf != '' %}
                     {% if checked != '' %}
                         {% if course[i].id in checked %}
-                                <p class="text-course"><u>Добавлен</u></p>
-                                <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
-                                    </div>
+                                <a class="delete-button" href="/delete_my_course/{{ course[i].id }}"></a>
                         {% else %}
-                            <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
-                                    </div>
+                            <a class="add-button" href="/add_my_course/{{ course[i].id }}">Добавить</a>
                         {% endif %}
                     {% else %}
                          <div class="courses1">
@@ -57,10 +51,9 @@
     {% endfor %}
     <div class="home-buttons">
     <a class="button1" href="/home/all-courses">Просмотреть все</a>
-        {% if userinf != '' %}
+    {% if userinf != '' %}
             <p>{{ form.submit(type="submit", class="button1") }}</p>
         {% endif %}
-
     </div>
     </div>
 

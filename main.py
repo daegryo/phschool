@@ -1,24 +1,21 @@
 import os
-from flask import Flask, render_template, request
-from flask import Flask, url_for, redirect, render_template
-from data import db_session
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+import random
 
+from flask import Flask, redirect, render_template
+from flask import request
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_uploads import configure_uploads, IMAGES, UploadSet
+
+from crop import circle_crop
+from data import db_session
 from data.courses import Course
 from data.users import User
 from data.users_courses import UserCourse
 from forms.change import ChangeForm
-from forms.login import LoginForm
-from forms.uploads import UploadForm
-from forms.registration import RegistrationForm
 from forms.home import HomeForm
-
-from crop import circle_crop
-
-from flask_uploads import configure_uploads, IMAGES, UploadSet
-
-
-
+from forms.login import LoginForm
+from forms.registration import RegistrationForm
+from forms.uploads import UploadForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -110,8 +107,6 @@ def home():
         id_newcourses = [int(x) for x in id_newcourses]
 
         my_ids = [x.id for x in my_courses]
-        print(id_newcourses, 'то что ырбали')
-        print(my_ids, 'id my courses')
         for id_course in id_newcourses:
             print(id_course)
             if id_course not in my_ids:
@@ -139,12 +134,7 @@ def home():
             my_courses = '1'
     else:
         my_courses = ''
-
-    for el in all_courses:
-        print(str(el.id) in id_newcourses)
-
-    print(all_courses)
-
+    random.shuffle(all_courses)
     return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
 
 
@@ -283,6 +273,30 @@ def logout():
     userinf = ''
     logout_user()
     return redirect("/")
+
+
+@app.route('/delete_my_course/<course_id>')
+@login_required
+def delete_my_course(course_id):
+    db_sess = db_session.create_session()
+    del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).filter(UserCourse.id_course == course_id).first()
+    db_sess.delete(del_course)
+    db_sess.commit()
+    db_sess.close()
+    return redirect("/home")
+
+
+@app.route('/add_my_course/<course_id>')
+@login_required
+def add_my_course(course_id):
+    db_sess = db_session.create_session()
+    add_course = UserCourse()
+    add_course.id_course = course_id
+    add_course.user_id = current_user.id
+    db_sess.add(add_course)
+    db_sess.commit()
+    return redirect("/home")
+
 
 
 if __name__ == '__main__':

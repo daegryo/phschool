@@ -1,3 +1,4 @@
+<script src="../../../static/buttons_all-onecourse.js"></script>
 {% extends "base.html" %}
 
 {% block content %}
@@ -7,9 +8,9 @@
     {{ form.hidden_tag() }}
 <div class="all-courses">
 {% for i in range(len) %}
-    <div class="all-onecourse">
-<h3><a class="all-onecourse-a" href="#">{{ course[i].title }}</a></h3>
-        <p><a class="all-onecourse-a" href="#"> {{ course[i].description }}</a></p>
+    <div class="all-onecourse" data-course-id="{{ course[i].id }}">
+<h3><a class="all-onecourse-a">{{ course[i].title }}</a></h3>
+        <p><a class="all-onecourse-a">{{ course[i].description }}</a></p>
         <div class="courses1">
                                 <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
                                     </div>
