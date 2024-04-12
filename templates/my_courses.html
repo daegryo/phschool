@@ -11,14 +11,12 @@
     <div class="all-onecourse" data-course-id="{{ course[i].id }}">
 <h3><a class="all-onecourse-a">{{ course[i].title }}</a></h3>
         <p><a class="all-onecourse-a">{{ course[i].description }}</a></p>
-        <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Удалить</u></p>
-                                    </div>
-    </div>
+        <div class="course-del-button">
+        <a class="delete-button" href="/delete_my_course/{{ course[i].id }}/2"></a>
+            </div>
+        </div>
 {% endfor %}
-         {% if userinf != '' and len != 0 %}
-            <p>{{ form.submit(type="submit", class="button1") }}</p>
-        {% else %}
+        {% if len == 0 %}
         <h2 class="usernames">Вы не добавили ни один курс</h2>
         {% endif %}
     </div>

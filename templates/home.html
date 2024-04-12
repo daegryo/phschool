@@ -3,11 +3,8 @@
 
 {% block content %}
 
-<form action="" method="post">
-{% if my_courses != '' %}
 <h2 class="usernames">Мои курсы</h2><br>
 
-    {{ form.hidden_tag() }}
     {% if my_courses != '1' %}
     <div class="otstup">
         <div class="courses">
@@ -16,7 +13,7 @@
                 <div class="onecourse" data-course-id="{{ my_courses[i].id }}">
                     <h3 class="text-course"><a  class='card-a'>{{ my_courses[i].title }}</a></h3>
                         <p class="text-course"><a  class='card-a'>{{ ' '.join(course[i].description.split()[:5]) }}...</a></p>
-                    <a class="delete-button" href="/delete_my_course/{{ my_courses[i].id }}"></a>
+                    <a class="delete-button" href="/delete_my_course/{{ my_courses[i].id }}/1"></a>
                 </div>
             {% endif %}
         {% endfor %}
@@ -26,7 +23,6 @@
     {% else %}
     <h2 class="usernames">Вы не добавили ни один курс</h2><br>
     {% endif %}
-{% endif %}
 <h2 class="usernames">Все курсы</h2><br>
 <div class="otstup">
 <div class="courses">
@@ -37,27 +33,19 @@
                 {% if userinf != '' %}
                     {% if checked != '' %}
                         {% if course[i].id in checked %}
-                                <a class="delete-button" href="/delete_my_course/{{ course[i].id }}"></a>
+                            <a class="delete-button" href="/delete_my_course/{{ course[i].id }}/1"></a>
                         {% else %}
                             <a class="add-button" href="/add_my_course/{{ course[i].id }}">Добавить</a>
                         {% endif %}
-                    {% else %}
-                         <div class="courses1">
-                                <input type="checkbox" name="check_box" value="{{ course[i].id }}" > <p class="text-course1"><u>Добавить</u></p>
-                                    </div>
                     {% endif %}
                 {% endif %}
         </div>
     {% endfor %}
     <div class="home-buttons">
     <a class="button1" href="/home/all-courses">Просмотреть все</a>
-    {% if userinf != '' %}
-            <p>{{ form.submit(type="submit", class="button1") }}</p>
-        {% endif %}
     </div>
     </div>
 
 </div>
-    </form>
 
 {% endblock %}

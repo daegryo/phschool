@@ -368,3 +368,8 @@ display: flex; /* or inline-flex */
     color: #111111;
     border-color: #000000;
 }
+
+.course-del-button {
+    margin-left: 3%;
+    margin-bottom: 10px;
+}

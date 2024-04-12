@@ -17,6 +17,7 @@ from forms.login import LoginForm
 from forms.registration import RegistrationForm
 from forms.uploads import UploadForm
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads/images'
@@ -30,13 +31,18 @@ img = UploadSet('images', IMAGES)
 configure_uploads(app, img)
 
 userinf = ''
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -72,6 +78,7 @@ def registration():
         return redirect(f"/login")
     return render_template('registration.html', form=form)
 
+
 @app.route('/home/personal-class/<email>', methods=['GET', 'POST'])
 def personal_class(email):
     form = UploadForm()
@@ -94,21 +101,19 @@ def home():
     db_sess = db_session.create_session()
     id_newcourses = ''
     all_courses = db_sess.query(Course).all()
-    if form.validate_on_submit():
-        if current_user.is_authenticated:
-            id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
-            print(id_courses)
-            my_courses = []
-            if id_courses != []:
-                for el in id_courses:
-                    courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
-                    my_courses.append(courses)
+    if current_user.is_authenticated:
+        id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
+        print(id_courses)
+        my_courses = []
+        if id_courses != []:
+            for el in id_courses:
+                courses = db_sess.query(Course).filter(Course.id == el.id_course).first()
+                my_courses.append(courses)
         id_newcourses = request.form.getlist("check_box")
         id_newcourses = [int(x) for x in id_newcourses]
 
         my_ids = [x.id for x in my_courses]
         for id_course in id_newcourses:
-            print(id_course)
             if id_course not in my_ids:
                 user_courses = UserCourse()
                 user_courses.user_id = int(current_user.id)
@@ -135,7 +140,7 @@ def home():
     else:
         my_courses = ''
     random.shuffle(all_courses)
-    return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), form=form, checked=id_newcourses, userinf=current_user)
+    return render_template('home.html', course=all_courses, my_courses=my_courses, len=len(my_courses), checked=id_newcourses, userinf=current_user)
 
 
 @app.route('/home/all-courses/<course_id>')
@@ -194,6 +199,7 @@ def all_courses():
     return render_template('all_courses.html', course=all_courses, userinf=current_user, len=len(all_courses), checked=id_newcourses, form=form)
 
 
+@login_required
 @app.route('/home/my-courses', methods=['GET', 'POST'])
 def my_courses():
     global userinf
@@ -237,7 +243,7 @@ def change(email):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
     print(user.name)
-    if  request.method == 'POST' and form.validate_on_submit():
+    if request.method == 'POST' and form.validate_on_submit():
 
         user.name = form.name.data
         user.about = form.about.data
@@ -275,15 +281,19 @@ def logout():
     return redirect("/")
 
 
-@app.route('/delete_my_course/<course_id>')
+@app.route('/delete_my_course/<course_id>/<page>')
 @login_required
-def delete_my_course(course_id):
+def delete_my_course(course_id, page):
+    print(page)
     db_sess = db_session.create_session()
     del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).filter(UserCourse.id_course == course_id).first()
     db_sess.delete(del_course)
     db_sess.commit()
     db_sess.close()
-    return redirect("/home")
+    if page == '1':
+        return redirect("/home")
+    else:
+        return redirect("/home/my-courses")
 
 
 @app.route('/add_my_course/<course_id>')
@@ -298,9 +308,9 @@ def add_my_course(course_id):
     return redirect("/home")
 
 
-
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 
-    app.run(port=8080, host='127.0.0.1', debug=True)
 

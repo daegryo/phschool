@@ -10,6 +10,9 @@
     <div class="all-onecourse" data-course-id="{{ el.id }}">
 <h3><a class="all-onecourse-a">{{ el.title }}</a></h3>
         <p><a class="all-onecourse-a"> {{ el.description }}</a></p>
+        <div class="course-del-button">
+        <a class="delete-button" href="/delete_my_course/{{ el.id }}/3"></a>
+            </div>
     </div>
     </a>
 {% endfor %}

@@ -15,10 +15,10 @@
             <a class="button" href="/home/personal-class/<{{ current_user.email }}>">{{ current_user.name }}</a>
             <a class="button" href="/logout">Выйти</a>
             <a href="/home" class="button">Курсы</a>
-            <img class="avatar" src="../../../static/avatars/{{ current_user.photo }}" alt="no">
+            <a href="/home/personal-class/<{{ current_user.email }}>"><img class="avatar" src="../../../static/avatars/{{ current_user.photo }}" alt="no"></a>
     {% else %}
-            <a href="/login" class="button">Log In</a>
-            <a href="/login/registration" class="button">Register</a>
+            <a href="/login" class="button">Войти</a>
+            <a href="/login/registration" class="button">Регистрация</a>
             <a href="/home" class="button">Курсы</a>
     {% endif %}
 
