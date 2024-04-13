@@ -10,9 +10,20 @@
     <div class="all-onecourse" data-course-id="{{ el.id }}">
 <h3><a class="all-onecourse-a">{{ el.title }}</a></h3>
         <p><a class="all-onecourse-a"> {{ el.description }}</a></p>
-        <div class="course-del-button">
-        <a class="delete-button" href="/delete_my_course/{{ el.id }}/3"></a>
-            </div>
+        {% if userinf != '' %}
+                        <div class="course-del-button">
+                    {% if checked != '' %}
+                        {% if el.id in checked %}
+                            <a class="delete-button" href="/delete_my_course/{{ el.id }}/3"></a>
+                        {% else %}
+                            <a class="add-button" href="/add_my_course/{{ el.id }}/2">Добавить</a>
+                        {% endif %}
+
+                    {% else %}
+                        <a class="add-button" href="/add_my_course/{{ el.id }}/2">Добавить</a>
+                    {% endif %}
+                        </div>
+                {% endif %}
     </div>
     </a>
 {% endfor %}

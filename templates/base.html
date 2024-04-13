@@ -12,14 +12,13 @@
     <div class="head">
         <a href="/" class="name"><h1 class="name">Школа</h1></a>
         {% if current_user.is_authenticated %}
-            <a class="button" href="/home/personal-class/<{{ current_user.email }}>">{{ current_user.name }}</a>
-            <a class="button" href="/logout">Выйти</a>
-            <a href="/home" class="button">Курсы</a>
+            <a href="/logout"><button class="logout-button">Выйти</button></a>
+            <a href="/home"><button class="courses-button">Курсы</button></a>
             <a href="/home/personal-class/<{{ current_user.email }}>"><img class="avatar" src="../../../static/avatars/{{ current_user.photo }}" alt="no"></a>
     {% else %}
-            <a href="/login" class="button">Войти</a>
-            <a href="/login/registration" class="button">Регистрация</a>
-            <a href="/home" class="button">Курсы</a>
+            <a href="/login"><button class="login-button">Войти</button></a>
+            <a href="/login/registration"><button class="register-button">Зарегистрироваться</button></a>
+            <a href="/home"><button class="courses-button">Курсы</button></a>
     {% endif %}
 
         </div>

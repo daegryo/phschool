@@ -35,7 +35,7 @@
                         {% if course[i].id in checked %}
                             <a class="delete-button" href="/delete_my_course/{{ course[i].id }}/1"></a>
                         {% else %}
-                            <a class="add-button" href="/add_my_course/{{ course[i].id }}">Добавить</a>
+                            <a class="add-button" href="/add_my_course/{{ course[i].id }}/1">Добавить</a>
                         {% endif %}
                     {% endif %}
                 {% endif %}

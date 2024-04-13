@@ -192,6 +192,7 @@ def all_courses():
             id_newcourses = []
             for el in my_courses:
                 id_newcourses.append(el.id)
+                print(el)
         else:
             my_courses = '1'
     else:
@@ -217,7 +218,6 @@ def my_courses():
         id_newcourses = [int(x) for x in id_newcourses]
 
         my_ids = [x.id for x in my_courses]
-        print(my_ids)
         for id_course in id_newcourses:
             if id_course in my_ids:
                 del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id,
@@ -292,19 +292,24 @@ def delete_my_course(course_id, page):
     db_sess.close()
     if page == '1':
         return redirect("/home")
-    else:
+    elif page == '2':
         return redirect("/home/my-courses")
+    else:
+        return redirect("/home/all-courses")
 
 
-@app.route('/add_my_course/<course_id>')
+@app.route('/add_my_course/<course_id>/<page>')
 @login_required
-def add_my_course(course_id):
+def add_my_course(course_id, page=None):
     db_sess = db_session.create_session()
     add_course = UserCourse()
     add_course.id_course = course_id
     add_course.user_id = current_user.id
     db_sess.add(add_course)
     db_sess.commit()
+    print([page])
+    if page == '2':
+        return redirect("/home/all-courses")
     return redirect("/home")
 
 
