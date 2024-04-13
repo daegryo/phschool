@@ -7,4 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
             window.location.href = "/home/all-courses/" + courseId;
         });
     });
+    courseDivs2.forEach(function(courseDiv) {
+        courseDiv.addEventListener("click", function() {
+            var courseId = courseDiv.getAttribute("data-course-id");
+            window.location.href = "/home/all-courses/" + courseId;
+        });
+    });
 });

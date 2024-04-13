@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>science school</title>
         <link rel="stylesheet" href="../../../static/styles.css">
-    <script src="../../../static/buttons.js"></script>
+    <script src="../../../static/buttons_all-onecourse.js"></script>
 </head>
 
 <body>
     <div class="head">
-        <a href="/" class="name"><h1 class="name">*Школа</h1></a>
+        <a href="/" class="name"><h1 class="name">Школа</h1></a>
         {% if current_user.is_authenticated %}
             <a class="button" href="/home/personal-class/<{{ current_user.email }}>">{{ current_user.name }}</a>
             <a class="button" href="/logout">Выйти</a>
-            <a href="/home" class="button">Home</a>
-            <img class="avatar" src="../../../static/avatars/{{ current_user.photo }}" alt="no">
+            <a href="/home" class="button">Курсы</a>
+            <a href="/home/personal-class/<{{ current_user.email }}>"><img class="avatar" src="../../../static/avatars/{{ current_user.photo }}" alt="no"></a>
     {% else %}
-            <a href="/login" class="button">Log In</a>
-            <a href="/login/registration" class="button">Register</a>
-            <a href="/home" class="button">Home</a>
+            <a href="/login" class="button">Войти</a>
+            <a href="/login/registration" class="button">Регистрация</a>
+            <a href="/home" class="button">Курсы</a>
     {% endif %}
 
         </div>
