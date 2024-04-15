@@ -305,6 +305,7 @@ display: flex; /* or inline-flex */
     border: 2px solid #ccc; /* Рамка вокруг блока */
     border-radius: 20px; /* Скругление углов */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    font-family: Verdana, Helvetica, Arial, sans-serif;
 }
 
 .main-info h2 {
@@ -425,4 +426,30 @@ display: flex; /* or inline-flex */
 
 .courses-button:hover {
     background-color: #FF8C00; /* Темно-оранжевый цвет при наведении */
+}
+
+.lesson-block {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.lesson-block h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.lesson-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s;
+}
+
+.lesson-button:hover {
+    background-color: #45a049;
 }

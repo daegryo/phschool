@@ -11,6 +11,7 @@ from data import db_session
 from data.courses import Course
 from data.users import User
 from data.users_courses import UserCourse
+from data.themes import Themes
 from forms.change import ChangeForm
 from forms.home import HomeForm
 from forms.login import LoginForm
@@ -68,7 +69,6 @@ def registration():
         db_sess = db_session.create_session()
         user = User()
         user.name = form.name.data
-        print(form.name.data)
         user.about = form.about.data
         user.email = form.email.data
         user.set_password(str(form.password.data))
@@ -103,7 +103,6 @@ def home():
     all_courses = db_sess.query(Course).all()
     if current_user.is_authenticated:
         id_courses = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).all()
-        print(id_courses)
         my_courses = []
         if id_courses != []:
             for el in id_courses:
@@ -169,7 +168,6 @@ def all_courses():
         id_newcourses = [int(x) for x in id_newcourses]
 
         my_ids = [x.id for x in my_courses]
-        print(my_ids)
         for id_course in id_newcourses:
             if id_course not in my_ids:
                 user_courses = UserCourse()
@@ -192,7 +190,6 @@ def all_courses():
             id_newcourses = []
             for el in my_courses:
                 id_newcourses.append(el.id)
-                print(el)
         else:
             my_courses = '1'
     else:
@@ -242,7 +239,6 @@ def change(email):
     form = ChangeForm()
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == new_email).first()
-    print(user.name)
     if request.method == 'POST' and form.validate_on_submit():
 
         user.name = form.name.data
@@ -255,7 +251,6 @@ def change(email):
                 os.remove(f'static/uploads/images/{user.id}.jpg')
                 os.rename(f'static/uploads/images/{fn}', f'static/uploads/images/{user.id}.jpg')
             filename = f'{user.id}.jpg'
-            print(filename)
             img_ava = circle_crop(filename.split()[0], (100, 100), '#727d71')
             img_ava.save(f'static/avatars/{filename.split()[0]}')
             img_ph = circle_crop(filename.split()[0], (250, 250),  '#FFFFFF')
@@ -284,7 +279,6 @@ def logout():
 @app.route('/delete_my_course/<course_id>/<page>')
 @login_required
 def delete_my_course(course_id, page):
-    print(page)
     db_sess = db_session.create_session()
     del_course = db_sess.query(UserCourse).filter(UserCourse.user_id == current_user.id).filter(UserCourse.id_course == course_id).first()
     db_sess.delete(del_course)
@@ -307,7 +301,6 @@ def add_my_course(course_id, page=None):
     add_course.user_id = current_user.id
     db_sess.add(add_course)
     db_sess.commit()
-    print([page])
     if page == '2':
         return redirect("/home/all-courses")
     return redirect("/home")
@@ -317,5 +310,3 @@ if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-
-

@@ -2,9 +2,19 @@
 {% block content %}
 
 <h2 class="gradient">{{ course.title }}</h2>
-<div class="text-block">\
+<div class="text-block">
     <div class="main-info">
     <p>{{ course.content }}</p>
 </div>
+   <div class="lesson-block">
+    <h2>Список уроков</h2>
+    <ul>
+        <li><a href="#" class="lesson-button">Урок 1: Введение в тему</a></li>
+        <li><a href="#" class="lesson-button">Урок 2: Основные понятия</a></li>
+        <li><a href="#" class="lesson-button">Урок 3: Практические примеры</a></li>
+        <li><a href="#" class="lesson-button">Урок 4: Дополнительные материалы</a></li>
+    </ul>
 </div>
+</div>
+
 {% endblock %}
