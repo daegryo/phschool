@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if course.title == '1' %}
+    <h2 class="gradient">Введение в тему</h2>
+{% elif course.title == '2' %}
+    <h2 class="gradient">Основные понятия</h2>
+{% elif course.title == '3' %}
+    <h2 class="gradient">Практические примеры</h2>
+{% endif %}
+<div class="text-block">
+    <div class="main-info">
+    <p>{{ text }}</p>
+</div>
+</div>
+
+{% endblock %}

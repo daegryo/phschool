@@ -150,6 +150,16 @@ def course(course_id):
         return render_template('course.html', course=el_course)
 
 
+@app.route('/home/all-courses/<course_id>/<theme>')
+def theme(course_id, theme):
+    print(theme)
+    db_sess = db_session.create_session()
+    el_course = db_sess.query(Themes).filter_by(course_id=course_id, title=theme).first()
+    if el_course:
+        text = ''.join(open(f'static/themes/{el_course.content}', 'r', encoding='utf-8').readlines())
+        return render_template('theme.html', course=el_course, text=text)
+
+
 @app.route('/home/all-courses')
 def all_courses():
     form = HomeForm()
